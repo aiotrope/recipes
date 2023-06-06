@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+
+  <% recipes.forEach(function(element) { %>
+
+    <p>Name: <a href="/recipe/<%= element.name %>"><%- element.name %></a></p>
+    <p>Ingredients: <%- element.ingredients %></p>
+    <p>Instructions:  <%- element.instructions %></p>
+     
+  <hr>
+  <% })%>
+
+</body>
+
 </html>
