@@ -28,16 +28,21 @@ router.post("/recipe/", (req, res, next) => {
     Recipes.unshift(data);
 
     let newRecipe = Recipes.find((element) => element.name === name);
-    console.log(newRecipe);
-    res.json({ ...newRecipe });
+    if (newRecipe) {
+     res.json({ ...newRecipe });
+    }
   }
 });
 
 router.get("/recipe/:food", (req, res) => {
   const { food } = req.params;
-  console.log(food)
+  //console.log(food);
   const foundRecipe = Recipes.find((element) => element.name === food);
-  res.json({ ...foundRecipe });
+  if (foundRecipe) {
+    return res.render("recipe", {
+      ...foundRecipe,
+    });
+  }
 });
 
 module.exports = router;
