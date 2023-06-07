@@ -51,7 +51,7 @@ saveForm.addEventListener("submit", (event) => {
           setTimeout(() => {
             window.location.reload();
             window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`;
-          }, 500);
+          }, 2000);
         })
         .catch((e) => console.error(e));
     })

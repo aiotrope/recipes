@@ -40,7 +40,7 @@ router.get("/recipe/:food", (req, res) => {
   const foundRecipe = Recipes.find((element) => element.name === food);
   if (foundRecipe) {
     return res.render("recipe", {
-      ...foundRecipe,
+      ...foundRecipe, title: "Recipes", recipes: Recipes 
     });
   }
 });
