@@ -48,14 +48,14 @@ saveForm.addEventListener("submit", (event) => {
         .json()
         .then((data) => {
           console.log(data);
-          const responses = document.createElement("p");
-          responses.innerHTML = data.message;
-          saveRecipeResponse.appendChild(responses);
+          //const responses = document.createElement("p");
+          //responses.innerHTML = data.message;
+          //saveRecipeResponse.appendChild(responses);
           setTimeout(() => {
             /* ingredientsArr.length = 0
             instructionsArr.length = 0 */
             //saveForm.reset();
-            responses.remove();
+            //responses.remove();
             window.location.reload();
           }, 1000);
         })

@@ -10,4 +10,4 @@ Content-Type: application/json
 }
 
 ### fetch user
-GET http://localhost:3000/recipe/pizza
+GET http://localhost:3000/recipe/pasta
