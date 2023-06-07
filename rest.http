@@ -3,9 +3,9 @@ POST http://localhost:3000/recipe/
 Content-Type: application/json
 
 {
-   "name": "pizza",
-   "ingredient": "flour",
-   "instruction": "mix"
+   "name": "pasta",
+   "ingredient": "tomato sauce",
+   "instruction": "sautee"
   
 }
 

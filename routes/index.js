@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Recipes = [];
 
+
 /* GET home page. */
 router.get("/", (req, res, next) => {
   res.render("index", { title: "Recipes", recipes: Recipes });
@@ -14,20 +15,22 @@ router.post("/recipe/", (req, res, next) => {
 
   let data = {
     name: name,
-    ingredients: [ingredient],
-    instructions: [instruction],
+    ingredients: ingredient,
+    instructions: instruction
   };
 
   const foundRecipe = Recipes.findIndex((element) => element.name === name);
   if (foundRecipe !== -1) {
-    Recipes[foundRecipe].instructions.push(instruction);
-    Recipes[foundRecipe].ingredients.push(ingredient);
+    Recipes[foundRecipe].instructions.unshift(instruction);
+    Recipes[foundRecipe].ingredients.unshift(ingredient);
    let checkRecipe = Recipes.find((element) => element.name === name)
     res.json({ result: checkRecipe });
   } else {
-    Recipes.push(data);
-    let newRecipe =  Recipes.find((element) => element.name === data.name)
-    res.json({ result: newRecipe });
+    Recipes.unshift(data);
+
+    let newRecipe =  Recipes.find((element) => element.name === name)
+    console.log(newRecipe)
+    res.json({ message: 'New recipe added', result: newRecipe });
   }
 });
 

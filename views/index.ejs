@@ -5,23 +5,28 @@
   <title>
     <%= title %>
   </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="shortcut icon" href="#">
+  <script src="/javascripts/createRecipe.js" defer></script>
 </head>
 
 <body>
-  <h1>
-    <%= title %>
-  </h1>
-
-  <% recipes.forEach(function(element) { %>
-
-    <p>Name: <a href="/recipe/<%= element.name %>"><%- element.name %></a></p>
-    <p>Ingredients: <%- element.ingredients %></p>
-    <p>Instructions:  <%- element.instructions %></p>
-     
-  <hr>
-  <% })%>
-
+  <header>
+    <%- include('./partials/header'); %>
+  </header>
+  <div class="container">
+    <div class="col">
+      <%- include('./partials/listRecipes'); %>
+    </div>
+    <div class="col">
+      <%- include('./partials/createRecipe'); %>
+    </div>
+    <section class="section">
+      <%- include('./partials/uploadImage'); %>
+    </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,13 @@
+<form id="upload-form" action="/images/upload" enctype="multipart/form-data" method="POST">
+    <div>
+        <label for="name">Image name</label>
+        <input name="name" id='image-name' placeholder="Enter name" />
+    </div>
+    <br>
+    <div>
+        <label for='files'>Select files</label>
+        <input id="image-input" type="file" name="files" multiple>
+    </div>
+    <br>
+    <button class="btn" type='submit'>Upload</button>
+</form>
