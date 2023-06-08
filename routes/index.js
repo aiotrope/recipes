@@ -17,7 +17,7 @@ router.get("/recipe/:food", (req, res) => {
   if (!recipeObj) {
     recipeObj = {
       name: food,
-      partial,
+      ...partial,
     };
   }
 
