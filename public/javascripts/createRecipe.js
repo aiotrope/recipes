@@ -3,9 +3,47 @@
 var ingredientsArr = new Array();
 var instructionsArr = new Array();
 
+function MakeReq() {
+  let globArr = document.querySelector("#glob-recipes-var").textContent;
+  //console.log(globArr);
+  if (globArr == 0 && window.location.href === "http://localhost:3000/") {
+    let data = {
+      name: "Pizza",
+      ingredient: ["Flour", "Yeast", "Water"],
+      instruction: ["Proof", "Bake"],
+    };
+    const settings = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      Cache: "default",
+    };
+
+    fetch("http://localhost:3000/recipe/", settings)
+      .then((res) => {
+        res
+          .json()
+          .then((data) => {
+            console.log(data);
+            if (data.name) {
+              fetch(`http://127.0.0.1:3000/recipe/${data.name}`);
+              window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`;
+            }
+          })
+          .catch((e) => console.error(e));
+      })
+      .catch((e) => console.error(e));
+  }
+}
+
+
 function CaptureIngredient() {
   let inputIngredient = document.querySelector("#ingredients-text").value;
   ingredientsArr.push(inputIngredient);
+
   let asIngredient = document.getElementById("as-ingredient");
   console.log([...ingredientsArr].join(" "));
   asIngredient.innerHTML = [...ingredientsArr].join(" ");
@@ -30,7 +68,7 @@ saveForm.addEventListener("submit", (event) => {
   let data = {
     name: inputName.value,
     ingredient: ingredientsArr,
-    instruction: instructionsArr
+    instruction: instructionsArr,
   };
   const settings = {
     method: "POST",
@@ -56,5 +94,8 @@ saveForm.addEventListener("submit", (event) => {
         .catch((e) => console.error(e));
     })
     .catch((e) => console.error(e));
-
 });
+
+MakeReq();
+
+

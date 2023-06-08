@@ -11,9 +11,13 @@ const imagesRouter = require('./routes/images');
 
 const app = express();
 
+var Recipes = new Array() // global empty array
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('Recipes', Recipes); // global var
+app.locals.globRecipesVar = Recipes; // global var
 
 app.use(logger('dev'));
 app.use(express.json());
