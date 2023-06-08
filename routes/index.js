@@ -1,28 +1,8 @@
 const express = require("express");
 const axios = require("axios");
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-const path = require('path');
+const path = require("path");
 
 const router = express.Router();
-
-const storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "uploads/");
-  },
-  filename: function (req, file, callback) {
-    callback(null, new Date().toISOString() + "--" + file.originalname);
-  },
-});
-const fileFilter = (req, file, callback) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    callback(null, true);
-  } else {
-    callback(null, false);
-  }
-};
-
-//const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 router.get("/recipe", (req, res) => {
   let Recipes = req.app.get("Recipes");
@@ -51,7 +31,6 @@ router.get("/recipe/:food", (req, res) => {
   }
 });
 
-// test /recipe/:id in / route
 router.get("/", (req, res, next) => {
   let Recipes = req.app.get("Recipes");
   let recipe = Recipes[0];
@@ -68,29 +47,17 @@ router.get("/", (req, res, next) => {
 router.post("/recipe/", (req, res, next) => {
   let Recipes = req.app.get("Recipes");
   let { name, instruction, ingredient } = req.body;
-  let { images } = req.files;
-  //console.log(req.files.path);
 
-  let uploadPath;
-
-  console.log(images);
+  //console.log(images);
   let data = {
     name: name,
     ingredients: ingredient,
     instructions: instruction,
-    images: [images],
   };
-
-  uploadPath = path.resolve("./uploads") + '/temp' + images.name;
-
-  images.mv(uploadPath)
 
   Recipes.unshift(data);
 
   let newRecipe = Recipes.find((element) => element.name === name);
-  if (!images || Object.keys(images).length === 0) {
-    return res.status(400).send("No files were uploaded.");
-  }
 
   if (newRecipe) {
     res.send({
@@ -99,12 +66,26 @@ router.post("/recipe/", (req, res, next) => {
   }
 });
 
-router.post("/images", upload.array("images", 12), (req, res) => {
-  console.log(req.files.path);
-  //console.log(req.files);
+router.post("/images", (req, res) => {
+  let { recipe } = req.body;
+  let { images } = req.files;
+  //console.log(req.files.path);
+  let uploadPath;
+  uploadPath = path.resolve("./uploads") + "/temp" + images.name;
+  images.mv(uploadPath);
+
+  if (!images || Object.keys(images).length === 0) {
+    return res.status(400).send("No files were uploaded.");
+  }
+
+  let data = {
+    recipe: recipe,
+    images: [images],
+  };
+
   res.send({
-    success: true,
-    images: req.files.path,
+    ...data,
+    result: 'OK'
   });
 });
 

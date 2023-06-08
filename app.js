@@ -4,13 +4,11 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const multer = require("multer");
 var fileupload = require("express-fileupload");
-var upload = multer();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const imagesRouter = require("./routes/images");
+//const imagesRouter = require("./routes/images");
 
 const app = express();
 
@@ -52,7 +50,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static("uploads"));
 app.use(cors());
-//app.use(upload.array());
 app.use(fileupload());
 
 app.use((req, res, next) => {
@@ -74,7 +71,7 @@ app.use((req, res, next) => {
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/images", imagesRouter);
+//app.use("/images", imagesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
