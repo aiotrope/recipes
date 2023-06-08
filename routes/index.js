@@ -43,8 +43,10 @@ router.get("/recipe/:food", (req, res) => {
   //console.log(food);
   const foundRecipe = Recipes.find((element) => element.name === food);
   if (foundRecipe) {
-    res.json({
+    res.render('recipe',{
       ...foundRecipe,
+      title: "Recipes",
+      recipes: Recipes,
     });
   }
 });

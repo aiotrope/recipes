@@ -29,9 +29,9 @@ function MakeReq() {
           .then((data) => {
             console.log(data);
             if (data.name) {
-              //fetch(`http://127.0.0.1:3000/recipe/${data.name}`);
-              //window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`;
-              window.location.reload()
+              fetch(`http://127.0.0.1:3000/recipe/${data.name}`);
+              window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`;
+              //window.location.reload()
             }
           })
           .catch((e) => console.error(e));
