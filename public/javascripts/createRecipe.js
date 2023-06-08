@@ -70,7 +70,7 @@ saveForm.addEventListener("submit", (event) => {
         .then((data) => {
           //console.log(data);
           setTimeout(() => {
-            window.location.reload();
+            //window.location.reload();
             window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`;
           }, 1000);
         })

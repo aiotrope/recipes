@@ -38,7 +38,7 @@ router.get("/", (req, res, next) => {
   axios(`http://localhost:3000/recipe/${recipe.name}`)
     .then((response) => {
       //console.log(response.data);
-      res.render("index", { title: "Recipes", ...response.data });
+      res.render("recipe", { title: "Recipes", ...response.data });
     })
     .catch((e) => console.error(e));
 });
@@ -85,7 +85,7 @@ router.post("/images", (req, res) => {
 
   res.send({
     ...data,
-    result: 'OK'
+    result: "OK",
   });
 });
 
