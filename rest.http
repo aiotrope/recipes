@@ -4,10 +4,13 @@ Content-Type: application/json
 
 {
    "name": "pasta",
-   "ingredient": "tomato sauce",
-   "instruction": "sautee"
+   "ingredient": ["tomato sauce"],
+   "instruction": ["sautee"]
   
 }
 
-### fetch user
+### fetch recipe
 GET http://localhost:3000/recipe/pasta
+
+### fetch recipe
+GET http://localhost:3000/recipe/

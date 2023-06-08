@@ -1,52 +1,111 @@
 const express = require("express");
 const axios = require("axios");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const path = require('path');
+
 const router = express.Router();
 
-//const Recipes = [];
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "uploads/");
+  },
+  filename: function (req, file, callback) {
+    callback(null, new Date().toISOString() + "--" + file.originalname);
+  },
+});
+const fileFilter = (req, file, callback) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    callback(null, true);
+  } else {
+    callback(null, false);
+  }
+};
 
-/* GET home page. */
-router.get("/", (req, res, next) => {
+//const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+router.get("/recipe", (req, res) => {
   let Recipes = req.app.get("Recipes");
-  res.render("index", { title: "Recipes", recipes: Recipes });
+  res.json({ ...Recipes });
 });
 
-// Saving user
-router.post("/recipe/", (req, res, next) => {
-  let { name, instruction, ingredient } = req.body;
+router.get("/recipe/:food", (req, res) => {
   let Recipes = req.app.get("Recipes");
+  let { food } = req.params;
+  const partial = req.app.get("partialObj");
+  let recipeObj = Recipes.find((element) => element.name === food);
+  if (!recipeObj) {
+    recipeObj = {
+      name: food,
+      partial,
+    };
+  }
 
+  if (req.header("Accept").includes("application/json")) {
+    res.json(recipeObj);
+  } else {
+    res.render("recipe", {
+      title: "Recipes",
+      ...recipeObj,
+    });
+  }
+});
+
+// test /recipe/:id in / route
+router.get("/", (req, res, next) => {
+  let Recipes = req.app.get("Recipes");
+  let recipe = Recipes[0];
+
+  axios(`http://localhost:3000/recipe/${recipe.name}`)
+    .then((response) => {
+      //console.log(response.data);
+      res.render("index", { title: "Recipes", ...response.data });
+    })
+    .catch((e) => console.error(e));
+});
+
+// Saving recipe
+router.post("/recipe/", (req, res, next) => {
+  let Recipes = req.app.get("Recipes");
+  let { name, instruction, ingredient } = req.body;
+  let { images } = req.files;
+  //console.log(req.files.path);
+
+  let uploadPath;
+
+  console.log(images);
   let data = {
     name: name,
     ingredients: ingredient,
     instructions: instruction,
+    images: [images],
   };
 
-  const foundRecipe = Recipes.findIndex((element) => element.name === name);
-  if (foundRecipe !== -1) {
-    Recipes[foundRecipe].instructions.unshift(instruction);
-    Recipes[foundRecipe].ingredients.unshift(ingredient);
-    let checkRecipe = Recipes.find((element) => element.name === name);
-    res.send({ ...checkRecipe });
-  } else {
-    Recipes.unshift(data);
+  uploadPath = path.resolve("./uploads") + '/temp' + images.name;
 
-    let newRecipe = Recipes.find((element) => element.name === name);
-    if (newRecipe) {
-      res.send({ ...newRecipe });
-    }
+  images.mv(uploadPath)
+
+  Recipes.unshift(data);
+
+  let newRecipe = Recipes.find((element) => element.name === name);
+  if (!images || Object.keys(images).length === 0) {
+    return res.status(400).send("No files were uploaded.");
+  }
+
+  if (newRecipe) {
+    res.send({
+      ...newRecipe,
+    });
   }
 });
 
-router.get("/recipe/:food", (req, res) => {
-  const { food } = req.params;
-  let Recipes = req.app.get("Recipes");
-  //console.log(food);
-  const foundRecipe = Recipes.find((element) => element.name === food);
-  if (foundRecipe) {
-    res.json({
-      ...foundRecipe
-    });
-  }
+router.post("/images", upload.array("images", 12), (req, res) => {
+  console.log(req.files.path);
+  //console.log(req.files);
+  res.send({
+    success: true,
+    images: req.files.path,
+  });
 });
 
 module.exports = router;
