@@ -6,14 +6,14 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
-  let Recipes = req.app.get('Recipes');
+  let Recipes = req.app.get("Recipes");
   res.render("index", { title: "Recipes", recipes: Recipes });
 });
 
 // Saving user
 router.post("/recipe/", (req, res, next) => {
   let { name, instruction, ingredient } = req.body;
-  let Recipes = req.app.get('Recipes');
+  let Recipes = req.app.get("Recipes");
 
   let data = {
     name: name,
@@ -26,27 +26,25 @@ router.post("/recipe/", (req, res, next) => {
     Recipes[foundRecipe].instructions.unshift(instruction);
     Recipes[foundRecipe].ingredients.unshift(ingredient);
     let checkRecipe = Recipes.find((element) => element.name === name);
-    res.json({ ...checkRecipe });
+    res.send({ ...checkRecipe });
   } else {
     Recipes.unshift(data);
 
     let newRecipe = Recipes.find((element) => element.name === name);
     if (newRecipe) {
-      res.json({ ...newRecipe });
+      res.send({ ...newRecipe });
     }
   }
 });
 
 router.get("/recipe/:food", (req, res) => {
   const { food } = req.params;
-  let Recipes = req.app.get('Recipes');
+  let Recipes = req.app.get("Recipes");
   //console.log(food);
   const foundRecipe = Recipes.find((element) => element.name === food);
   if (foundRecipe) {
-    return res.render("recipe", {
+    res.json({
       ...foundRecipe,
-      title: "Recipes",
-      recipes: Recipes,
     });
   }
 });
