@@ -16,4 +16,7 @@ $ npm run start
 # run on debug mode
 $ npm run dev
 
+# lint & format code
+$ npm run format && npm run lint
+
 ```
