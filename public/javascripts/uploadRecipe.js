@@ -28,7 +28,7 @@ function UploadRecipe() {
             if (data.name) {
               //fetch(`http://127.0.0.1:3000/recipe/${data.name}`)
               window.location.reload()
-              return data
+              //return data
             }
           })
           .catch((e) => console.error(e))
