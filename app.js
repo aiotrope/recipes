@@ -8,7 +8,7 @@ var fileupload = require('express-fileupload')
 
 const indexRouter = require('./routes/index')
 const recipeRouter = require('./routes/recipe')
-//const imagesRouter = require("./routes/images");
+const imagesRouter = require('./routes/images')
 
 const app = express()
 
@@ -54,7 +54,7 @@ app.use(fileupload())
 
 app.use('/', indexRouter)
 app.use('/recipe', recipeRouter)
-//app.use("/images", imagesRouter);
+app.use('/images', imagesRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
