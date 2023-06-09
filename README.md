@@ -16,7 +16,7 @@ $ npm run start
 # run on debug mode
 $ npm run dev
 
-# lint & format code
+# lint and format code
 $ npm run format && npm run lint
 
 ## mogodb
