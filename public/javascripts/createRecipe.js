@@ -68,11 +68,9 @@ saveForm.addEventListener('submit', (event) => {
       res
         .json()
         .then((data) => {
-          //console.log(data);
-          setTimeout(() => {
-            window.location.reload()
-            //* window.location.href = `http://127.0.0.1:3000/recipe/${data.name}`
-          }, 1000)
+          console.log(data)
+          window.location.reload()
+          return data
         })
         .catch((e) => console.error(e))
     })

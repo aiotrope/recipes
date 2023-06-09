@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/recipe', (req, res) => {
   let Recipes = req.app.get('Recipes')
-  res.json({ ...Recipes })
+  res.json(Recipes)
 })
 
 router.get('/recipe/:food', (req, res) => {
@@ -23,9 +23,9 @@ router.get('/recipe/:food', (req, res) => {
   }
 
   if (req.header('Accept').includes('application/json')) {
-    res.json(recipeObj)
+    res.json({ ...recipeObj })
   } else {
-    res.render('recipe', {
+    res.render('index', {
       title: 'Recipes',
       ...recipeObj,
     })
