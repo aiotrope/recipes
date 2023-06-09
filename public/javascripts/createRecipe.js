@@ -4,8 +4,14 @@
 
 var ingredientsArr = []
 var instructionsArr = []
-
 const saveForm = document.querySelector('#create-form')
+
+document
+  .getElementById('add-ingredient')
+  .addEventListener('click', CaptureIngredient)
+document
+  .getElementById('add-instruction')
+  .addEventListener('click', CaptureInstruction)
 
 function CaptureIngredient() {
   let inputIngredient = document.querySelector('#ingredients-text').value
