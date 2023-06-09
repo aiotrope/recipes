@@ -7,7 +7,7 @@ const cors = require('cors')
 var fileupload = require('express-fileupload')
 
 const indexRouter = require('./routes/index')
-const usersRouter = require('./routes/users')
+const recipeRouter = require('./routes/recipe')
 //const imagesRouter = require("./routes/images");
 
 const app = express()
@@ -53,7 +53,7 @@ app.use(cors())
 app.use(fileupload())
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/recipe', recipeRouter)
 //app.use("/images", imagesRouter);
 
 // catch 404 and forward to error handler
