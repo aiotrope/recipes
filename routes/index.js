@@ -42,13 +42,11 @@ router.get('/recipe/:food', (req, res) => {
         instruction: partialObj.instructions,
       })
       .then((response) => {
-        if (response) {
-          res.status(200).json(response.data)
-        }
+        if (response) res.send(response.data)
       })
       .catch((e) => console.error(e))
   } else {
-    res.status(200).json(recipe)
+    return res.status(200).json(recipe)
   }
 })
 
@@ -77,7 +75,7 @@ router.post('/recipe/', (req, res) => {
   let newRecipe = Recipes.find((element) => element.name === name)
 
   if (newRecipe) {
-    res.status(200).json(newRecipe)
+    return res.status(200).json(newRecipe)
   }
 })
 
