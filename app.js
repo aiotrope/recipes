@@ -39,6 +39,7 @@ app.set('view engine', 'ejs')
 app.set('Recipes', Recipes)
 app.set('partialObj', partialObj)
 app.locals.globRecipesVar = Recipes
+global.myVar = Recipes
 
 app.use(logger('dev'))
 app.use(express.json())

@@ -4,50 +4,68 @@ const path = require('path')
 
 const router = express.Router()
 
+var partialObj = {
+  ingredients: [
+    '12 large guajillo chiles',
+    '1/4 cup corn masa harina',
+    '1/4 cup unsalted peanuts',
+    '1/4 cup raisins',
+    '1 whole clove',
+  ],
+  instructions: [
+    'Gather the ingredients.',
+    'Make the Mole Base',
+    'Mix and Cook the Mole',
+  ],
+}
+
+var Recipes = [
+  {
+    name: 'Mole',
+    ...partialObj,
+  },
+]
+
 router.get('/recipe', (req, res) => {
-  let Recipes = req.app.get('Recipes')
-  res.json({ ...Recipes })
+  res.status(200).json(Recipes)
 })
 
 router.get('/recipe/:food', (req, res) => {
-  let Recipes = req.app.get('Recipes')
   let { food } = req.params
-  const partial = req.app.get('partialObj')
-  let recipeObj = Recipes.find((element) => element.name === food)
-  if (!recipeObj) {
-    recipeObj = {
-      name: food,
-      ...partial,
-    }
-  }
-
-  if (req.header('Accept').includes('application/json')) {
-    res.json(recipeObj)
+  let recipe = Recipes.find((element) => element.name === food)
+  if (!recipe) {
+    //console.log(partialObj.ingredients)
+    axios
+      .post('http://localhost:3000/recipe/', {
+        name: food,
+        ingredient: partialObj.ingredients,
+        instruction: partialObj.instructions,
+      })
+      .then((response) => {
+        if (response) {
+          res.status(201).json(response.data)
+        }
+      })
+      .catch((e) => console.error(e))
   } else {
-    res.render('recipe', {
-      title: 'Recipes',
-      ...recipeObj,
-    })
+    res.status(200).json(recipe)
   }
 })
 
 router.get('/', (req, res) => {
-  let Recipes = req.app.get('Recipes')
   let recipe = Recipes[0]
-
-  axios(`http://localhost:3000/recipe/${recipe.name}`)
+  axios
+    .get(`http://localhost:3000/recipe/${recipe.name}`)
     .then((response) => {
-      //console.log(response.data);
+      //console.log(response?.data)
       res.render('recipe', { title: 'Recipes', ...response.data })
     })
     .catch((e) => console.error(e))
 })
 
 router.post('/recipe/', (req, res) => {
-  let Recipes = req.app.get('Recipes')
   let { name, instruction, ingredient } = req.body
 
-  //console.log(images);
   let data = {
     name: name,
     ingredients: ingredient,
@@ -59,9 +77,7 @@ router.post('/recipe/', (req, res) => {
   let newRecipe = Recipes.find((element) => element.name === name)
 
   if (newRecipe) {
-    res.send({
-      ...newRecipe,
-    })
+    res.status(201).json(newRecipe)
   }
 })
 
