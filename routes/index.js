@@ -26,6 +26,8 @@ var Recipes = [
   },
 ]
 
+let newEntry
+
 router.get('/recipe', (req, res) => {
   res.status(200).json(Recipes)
 })
@@ -42,23 +44,45 @@ router.get('/recipe/:food', (req, res) => {
         instruction: partialObj.instructions,
       })
       .then((response) => {
-        if (response) res.send(response.data)
+        let resp = response.data
+        if (response) {
+          res.status(200).json({
+            name: resp.name,
+            ingredients: resp.ingredients,
+            instructions: resp.instructions,
+          })
+          newEntry = response.data.name
+        }
       })
       .catch((e) => console.error(e))
   } else {
-    return res.status(200).json(recipe)
+    res.send({
+      name: recipe.name,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+    })
   }
 })
 
 router.get('/', (req, res) => {
   let recipe = Recipes[0]
-  axios
-    .get(`http://localhost:3000/recipe/${recipe.name}`)
-    .then((response) => {
-      //console.log(response?.data)
-      res.render('recipe', { title: 'Recipes', ...response.data })
-    })
-    .catch((e) => console.error(e))
+  if (Recipes.length > 1) {
+    axios
+      .get(`http://localhost:3000/recipe/${newEntry}`)
+      .then((response) => {
+        //console.log(response?.data)
+        res.render('recipe', { title: 'Recipes', ...response.data })
+      })
+      .catch((e) => console.error(e))
+  } else {
+    axios
+      .get(`http://localhost:3000/recipe/${recipe.name}`)
+      .then((response) => {
+        //console.log(response?.data)
+        res.render('recipe', { title: 'Recipes', ...response.data })
+      })
+      .catch((e) => console.error(e))
+  }
 })
 
 router.post('/recipe/', (req, res) => {
