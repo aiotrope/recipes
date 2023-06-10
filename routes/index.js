@@ -43,7 +43,7 @@ router.get('/recipe/:food', (req, res) => {
       })
       .then((response) => {
         if (response) {
-          res.status(201).json(response.data)
+          res.status(200).json(response.data)
         }
       })
       .catch((e) => console.error(e))
@@ -77,7 +77,7 @@ router.post('/recipe/', (req, res) => {
   let newRecipe = Recipes.find((element) => element.name === name)
 
   if (newRecipe) {
-    res.status(201).json(newRecipe)
+    res.status(200).json(newRecipe)
   }
 })
 

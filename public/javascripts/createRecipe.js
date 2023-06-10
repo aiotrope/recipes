@@ -83,5 +83,5 @@ saveForm.addEventListener('submit', async (event) => {
   await postRecipe(data)
   await uploadImage(formData)
 
-  window.location.reload()
+  //window.location.reload()
 })

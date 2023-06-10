@@ -10,36 +10,8 @@ const indexRouter = require('./routes/index')
 
 const app = express()
 
-var partialObj = {
-  ingredients: [
-    '12 large guajillo chiles',
-    '1/4 cup corn masa harina',
-    '1/4 cup unsalted peanuts',
-    '1/4 cup raisins',
-    '1 whole clove',
-  ],
-  instructions: [
-    'Gather the ingredients.',
-    'Make the Mole Base',
-    'Mix and Cook the Mole',
-  ],
-}
-
-var Recipes = [
-  {
-    name: 'Mole',
-    ...partialObj,
-  },
-]
-
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-
-// global var
-app.set('Recipes', Recipes)
-app.set('partialObj', partialObj)
-app.locals.globRecipesVar = Recipes
-global.myVar = Recipes
 
 app.use(logger('dev'))
 app.use(express.json())
