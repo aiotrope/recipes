@@ -32,15 +32,12 @@ var Recipes = [
   },
 ]
 
-var blankParams = 'Mole'
-
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 // global var
 app.set('Recipes', Recipes)
 app.set('partialObj', partialObj)
 app.locals.globRecipesVar = Recipes
-app.locals.blankParams = blankParams
 
 app.use(logger('dev'))
 app.use(express.json())

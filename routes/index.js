@@ -20,44 +20,48 @@ var partialObj = {
   ],
 }
 
-var Recipes = [
-  {
-    name: 'Mole',
-    ...partialObj,
-  },
-]
-
-//var newEntry
-
 router.get('/recipe', (req, res) => {
-  res.status(200).json(Recipes)
+  const recipes = req.app.locals.globRecipesVar
+  res.status(200).json(recipes)
 })
 
 router.get('/recipe/:food', (req, res) => {
   let { food } = req.params
-  let recipe = Recipes.find((element) => element.name === food)
-  //food = req.app.locals.blankParams
-  //console.log(food)
-  let data = {
-    name: recipe.name,
-    ingredients: recipe.ingredients,
-    instructions: recipe.instructions,
-  }
-  if (recipe) {
-    res.render('recipe1', { title: 'Recipes', ...data })
-  } else if (!recipe) {
-    req.app.locals.blankParams = food
-    console.log(req.app.locals.blankParams)
+  let recipeStore = req.app.locals.globRecipesVar
+  let recipe = recipeStore.find((element) => element.name === food)
+  if (!recipe) {
+    axios
+      .post('http://localhost:3000/recipe/', {
+        name: food,
+        ingredient: partialObj.ingredients,
+        instruction: partialObj.instructions,
+      })
+      .then((response) => {
+        let resp = response.data
+        if (resp) {
+          recipeStore.push(resp)
+          res.status(200).json({
+            name: resp.name,
+            ingredients: resp.ingredients,
+            instructions: resp.instructions,
+          })
+        }
+      })
+      .catch((e) => console.error(e))
+  } else {
+    res.send({
+      name: recipe.name,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+    })
   }
 })
-
 router.get('/', (req, res) => {
   res.render('recipe', { title: 'Recipes' })
 })
 
 router.post('/recipe/', (req, res) => {
-  //const recipes = req.app.get('Recipes')
-  const recipes = Recipes
+  const recipes = req.app.get('Recipes')
   let { name, instruction, ingredient } = req.body
 
   let data = {
@@ -66,7 +70,7 @@ router.post('/recipe/', (req, res) => {
     instructions: instruction,
   }
 
-  recipes.unshift(data)
+  recipes.push(data)
 
   let newRecipe = recipes.find((element) => element.name === name)
 
