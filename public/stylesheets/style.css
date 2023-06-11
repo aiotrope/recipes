@@ -18,3 +18,7 @@ body {
 a {
   color: #00B7FF;
 }
+
+#glob-recipes-var {
+  visibility: hidden;
+}

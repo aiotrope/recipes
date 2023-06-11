@@ -1,4 +1,5 @@
-<form id="create-form" enctype="multipart/form-data" method="POST">
+
+<form id="create-form" action="/recipe/" enctype="multipart/form-data" method="POST" target="formSending">
     <label for="name">Name</label>
     <input type="text" id="name-text" name="name">
     <h4>Ingredients</h4>
@@ -11,7 +12,7 @@
     <button id="add-instruction" type="button" class="btn">Add instruction</button>
     <br />
     <p id="as-instruction"></p><br>
-    <h4>Image</h4>
+    <h4>Images</h4>
     <input id="image-input" type="file" name="images" accept="image/*" multiple><br><br>
 
     <button id="submit" type="submit" class="btn">Submit</button>
