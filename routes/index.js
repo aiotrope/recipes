@@ -27,70 +27,31 @@ var Recipes = [
   },
 ]
 
-var newEntry
+//var newEntry
 
 router.get('/recipe', (req, res) => {
-  //const recipes = req.app.get('Recipes')
-  const recipes = Recipes
-  res.status(200).json(recipes)
+  res.status(200).json(Recipes)
 })
 
 router.get('/recipe/:food', (req, res) => {
   let { food } = req.params
-  //const recipes = req.app.get('Recipes')
-  const recipes = Recipes
-  const partial = req.app.get('partialObj')
-  let recipe = recipes.find((element) => element.name === food)
-  if (!recipe) {
-    //console.log(partialObj.ingredients)
-    axios
-      .post('http://localhost:3000/recipe/', {
-        name: food,
-        ingredient: partialObj.ingredients,
-        instruction: partialObj.instructions,
-      })
-      .then((response) => {
-        let resp = response.data
-        if (response) {
-          res.status(200).json({
-            name: resp.name,
-            ingredients: resp.ingredients,
-            instructions: resp.instructions,
-          })
-          newEntry = response.data.name
-          //console.log(recipes)
-        }
-      })
-      .catch((e) => console.error(e))
-  } else {
-    res.send({
+  let recipe = Recipes.find((element) => element.name === food)
+  //food = req.app.locals.blankParams
+  //console.log(food)
+  if (recipe) {
+    res.status(200).json({
       name: recipe.name,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
     })
+  } else if (!recipe) {
+    req.app.locals.blankParams = food
+    console.log(req.app.locals.blankParams)
   }
 })
 
-/* router.get('/', (req, res) => {
-  const recipes = Recipes
-  let recipe = recipes[0]
-  console.log(recipes)
-  if (recipes.length > 1) {
-    axios
-      .get(`http://localhost:3000/recipe/${newEntry}`)
-      .then((response) => {
-        res.render('recipe', { title: 'Recipes', ...response.data })
-      })
-      .catch((e) => console.error(e))
-  } else {
-    res.render('recipe1', { title: 'Recipes', ...recipe })
-  }
-}) */
 router.get('/', (req, res) => {
-  const recipes = Recipes
-  //res.status(200).json(recipes)
-  console.log({ recipes })
-  res.render('index', { title: 'Recipes', recipes: recipes })
+  res.render('recipe', { title: 'Recipes' })
 })
 
 router.post('/recipe/', (req, res) => {
