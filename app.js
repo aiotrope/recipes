@@ -11,17 +11,17 @@ const indexRouter = require('./routes/index')
 const app = express()
 
 var partialObj = {
+  instructions: [
+    'Gather the ingredients.',
+    'Make the Mole Base',
+    'Mix and Cook the Mole',
+  ],
   ingredients: [
     '12 large guajillo chiles',
     '1/4 cup corn masa harina',
     '1/4 cup unsalted peanuts',
     '1/4 cup raisins',
     '1 whole clove',
-  ],
-  instructions: [
-    'Gather the ingredients.',
-    'Make the Mole Base',
-    'Mix and Cook the Mole',
   ],
 }
 

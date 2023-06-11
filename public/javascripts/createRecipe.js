@@ -96,8 +96,8 @@ saveForm.addEventListener('submit', (event) => {
 
   let data = {
     name: inputName.value,
-    ingredient: ingredientsArr,
     instruction: instructionsArr,
+    ingredient: ingredientsArr,
   }
 
   formData.append('recipe', inputName.value)

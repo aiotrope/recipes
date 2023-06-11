@@ -6,17 +6,17 @@ const path = require('path')
 const router = express.Router()
 
 var partialObj = {
+  instructions: [
+    'Gather the ingredients.',
+    'Make the Mole Base',
+    'Mix and Cook the Mole',
+  ],
   ingredients: [
     '12 large guajillo chiles',
     '1/4 cup corn masa harina',
     '1/4 cup unsalted peanuts',
     '1/4 cup raisins',
     '1 whole clove',
-  ],
-  instructions: [
-    'Gather the ingredients.',
-    'Make the Mole Base',
-    'Mix and Cook the Mole',
   ],
 }
 
@@ -33,8 +33,8 @@ router.get('/recipe/:food', (req, res) => {
     axios
       .post('http://localhost:3000/recipe/', {
         name: food,
-        ingredient: partialObj.ingredients,
         instruction: partialObj.instructions,
+        ingredient: partialObj.ingredients,
       })
       .then((response) => {
         let resp = response.data
@@ -42,8 +42,8 @@ router.get('/recipe/:food', (req, res) => {
           recipeStore.push(resp)
           res.status(200).json({
             name: resp.name,
-            ingredients: resp.ingredients,
             instructions: resp.instructions,
+            ingredients: resp.ingredients,
           })
         }
       })
@@ -51,8 +51,8 @@ router.get('/recipe/:food', (req, res) => {
   } else {
     res.send({
       name: recipe.name,
-      ingredients: recipe.ingredients,
       instructions: recipe.instructions,
+      ingredients: recipe.ingredients,
     })
   }
 })
@@ -66,8 +66,8 @@ router.post('/recipe/', (req, res) => {
 
   let data = {
     name: name,
-    ingredients: ingredient,
     instructions: instruction,
+    ingredients: ingredient,
   }
 
   recipes.push(data)
