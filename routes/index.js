@@ -38,12 +38,13 @@ router.get('/recipe/:food', (req, res) => {
   let recipe = Recipes.find((element) => element.name === food)
   //food = req.app.locals.blankParams
   //console.log(food)
+  let data = {
+    name: recipe.name,
+    ingredients: recipe.ingredients,
+    instructions: recipe.instructions,
+  }
   if (recipe) {
-    res.status(200).json({
-      name: recipe.name,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-    })
+    res.render('recipe1', { title: 'Recipes', ...data })
   } else if (!recipe) {
     req.app.locals.blankParams = food
     console.log(req.app.locals.blankParams)
@@ -70,7 +71,7 @@ router.post('/recipe/', (req, res) => {
   let newRecipe = recipes.find((element) => element.name === name)
 
   if (newRecipe) {
-    return res.status(200).json(newRecipe)
+    res.status(200).json(newRecipe)
   }
 })
 

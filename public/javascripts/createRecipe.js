@@ -67,7 +67,7 @@ const uploadImage = async (formData) => {
   }
 }
 
-saveForm.addEventListener('submit', async (event) => {
+saveForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const inputName = document.querySelector('#name-text')
   const images = document.querySelector('#image-input')
@@ -84,8 +84,8 @@ saveForm.addEventListener('submit', async (event) => {
   for (let i = 0; i < images.files.length; i++) {
     formData.append('images', images.files[i])
   }
-  await postRecipe(data)
-  await uploadImage(formData)
+  postRecipe(data)
+  uploadImage(formData)
 
   //window.location.reload()
 })
@@ -154,11 +154,11 @@ if (blankParams !== null && blankParams !== null && blankParams !== 'Mole') {
     ingredient: ingredient,
     instruction: instruction,
   }
-  let a = postRecipe(data)
-  console.log(a)
+  console.log(blankParams)
+  postRecipe(data)
 }
 
-const fetchRecipe = async (params) => {
+/* const fetchRecipe = async (params) => {
   try {
     const response = await fetch(`http://localhost:3000/recipe/${params}`)
     const jsonData = await response.json()
@@ -170,6 +170,6 @@ const fetchRecipe = async (params) => {
   }
 }
 
-fetchRecipe(blankParams)
+fetchRecipe(blankParams) */
 
 //postRecipe(blankParams)
