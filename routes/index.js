@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 const express = require('express')
 const axios = require('axios')
 const path = require('path')
 
 const router = express.Router()
 
-/* var partialObj = {
+var partialObj = {
   ingredients: [
     '12 large guajillo chiles',
     '1/4 cup corn masa harina',
@@ -24,18 +25,20 @@ var Recipes = [
     name: 'Mole',
     ...partialObj,
   },
-] */
+]
 
-let newEntry
+var newEntry
 
 router.get('/recipe', (req, res) => {
-  const recipes = req.app.get('Recipes')
+  //const recipes = req.app.get('Recipes')
+  const recipes = Recipes
   res.status(200).json(recipes)
 })
 
 router.get('/recipe/:food', (req, res) => {
   let { food } = req.params
-  const recipes = req.app.get('Recipes')
+  //const recipes = req.app.get('Recipes')
+  const recipes = Recipes
   const partial = req.app.get('partialObj')
   let recipe = recipes.find((element) => element.name === food)
   if (!recipe) {
@@ -43,8 +46,8 @@ router.get('/recipe/:food', (req, res) => {
     axios
       .post('http://localhost:3000/recipe/', {
         name: food,
-        ingredient: partial.ingredients,
-        instruction: partial.instructions,
+        ingredient: partialObj.ingredients,
+        instruction: partialObj.instructions,
       })
       .then((response) => {
         let resp = response.data
@@ -68,25 +71,31 @@ router.get('/recipe/:food', (req, res) => {
   }
 })
 
-router.get('/', (req, res) => {
-  const recipes = req.app.get('Recipes')
+/* router.get('/', (req, res) => {
+  const recipes = Recipes
   let recipe = recipes[0]
   console.log(recipes)
   if (recipes.length > 1) {
     axios
       .get(`http://localhost:3000/recipe/${newEntry}`)
       .then((response) => {
-        //console.log(response?.data)
         res.render('recipe', { title: 'Recipes', ...response.data })
       })
       .catch((e) => console.error(e))
   } else {
-    res.render('recipe', { title: 'Recipes', ...recipe })
+    res.render('recipe1', { title: 'Recipes', ...recipe })
   }
+}) */
+router.get('/', (req, res) => {
+  const recipes = Recipes
+  //res.status(200).json(recipes)
+  console.log({ recipes })
+  res.render('index', { title: 'Recipes', recipes: recipes })
 })
 
 router.post('/recipe/', (req, res) => {
-  const recipes = req.app.get('Recipes')
+  //const recipes = req.app.get('Recipes')
+  const recipes = Recipes
   let { name, instruction, ingredient } = req.body
 
   let data = {
